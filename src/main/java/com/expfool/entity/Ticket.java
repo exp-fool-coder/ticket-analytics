@@ -4,13 +4,12 @@ import java.time.Instant;
 
 public record Ticket(
         String origin,
-        String origin_name,
+        String originName,
         String destination,
-        String destination_name,
-        Instant departure_datetime,
-        Instant arrival_datetime,
+        String destinationName,
+        Instant departureDatetime,
+        Instant arrivalDatetime,
         String carrier,
         int stops,
         int price
-) {
-}
+) { }
