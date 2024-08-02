@@ -1,6 +1,7 @@
 package com.expfool.controller;
 
 import com.expfool.dao.TicketFileReader;
+import com.expfool.dto.api.MinFlightTimeOfCarrier;
 import com.expfool.dto.api.TicketStatisticAnswer;
 import com.expfool.dto.jsonfiles.TicketFromFile;
 import com.expfool.entity.Ticket;
@@ -8,6 +9,7 @@ import com.expfool.utils.TicketStatistics;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TicketStatisticController {
@@ -32,14 +34,21 @@ public class TicketStatisticController {
 
         double averageTicketPrice = TicketStatistics.getAverageTicketsPrice(tickets);
         double medianTicketPrice = TicketStatistics.getMedianTicketsPrice(tickets);
-        Duration minFlightDuration = TicketStatistics.minFlightTime(tickets);
+        Map<String, Duration> minFlightTimeByEveryCarrier = TicketStatistics.minFlightTimeByEveryCarrier(tickets);
+
+        List<MinFlightTimeOfCarrier> minFlightTimeByEveryCarrierAnswer = minFlightTimeByEveryCarrier.entrySet().stream()
+                .map(entry -> new MinFlightTimeOfCarrier(
+                        entry.getKey(),
+                        entry.getValue().toSeconds(),
+                        entry.getValue().toHours()  + ":" + entry.getValue().toMinutesPart()
+                )).toList();
+
 
         return new TicketStatisticAnswer(
                 averageTicketPrice,
                 medianTicketPrice,
                 Math.abs(averageTicketPrice - medianTicketPrice),
-                minFlightDuration.toSeconds(),
-                minFlightDuration.toHours() + ":" + minFlightDuration.toMinutesPart()
+                minFlightTimeByEveryCarrierAnswer
         );
     }
 

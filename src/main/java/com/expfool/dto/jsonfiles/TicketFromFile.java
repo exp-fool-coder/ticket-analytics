@@ -5,6 +5,7 @@ import com.expfool.entity.Ticket;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public record TicketFromFile(
@@ -26,12 +27,14 @@ public record TicketFromFile(
         Instant departure = LocalDateTime.parse(
                 departure_date + " " + departure_time,
                 dateFormatter
-        ).atZone(Cities.valueOf(origin).timeZone.toZoneId()).toInstant();
+        ).atZone(ZoneId.of("UTC")).toInstant();
+        //atZone(Cities.valueOf(origin).timeZone.toZoneId()).toInstant();
 
         Instant arrival = LocalDateTime.parse(
                 arrival_date + " " + arrival_time,
                 dateFormatter
-        ).atZone(Cities.valueOf(destination).timeZone.toZoneId()).toInstant();
+        ).atZone(ZoneId.of("UTC")).toInstant();
+        //atZone(Cities.valueOf(destination).timeZone.toZoneId()).toInstant();
 
         return new Ticket(
                 origin,

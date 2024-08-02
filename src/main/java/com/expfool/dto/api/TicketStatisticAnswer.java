@@ -1,10 +1,11 @@
 package com.expfool.dto.api;
 
+import java.util.List;
+
 public record TicketStatisticAnswer(
         double averagePrice,
         double medianPrice,
         double differenceBetweenAverageAndMedianPrice,
-        long minFlightTimeInSeconds,
-        String formattedMinFlightTime
+        List<MinFlightTimeOfCarrier> minFlightTimeOfCarriers
 ) {
 }
